@@ -18,6 +18,9 @@ const double BULL_STRAT_MIN_POKYTIS = -0.1;
 const double BULL_STRAT_MAX_POKYTIS = 0.5;
 const double BEAR_STRAT_MIN_POKYTIS = -0.5;
 const double BEAR_STRAT_MAX_POKYTIS = 0.1;
+const double MIN_AKTYVO_KAINA = 0.1;
+const double RIZIKA = 1.0;
+const double KRIPTO_RIZIKA = 2.0;
 
 class Aktyvas {
 protected:
@@ -36,28 +39,28 @@ public:
     const vector<double>& gautiIstorija() const { return istorija; }
 
     void atnaujintiKaina(double naujaKaina) {
-        if (naujaKaina < 0.10) naujaKaina = 0.10;
+        if (naujaKaina < MIN_AKTYVO_KAINA) naujaKaina = MIN_AKTYVO_KAINA;
         kaina = naujaKaina;
         istorija.push_back(naujaKaina);
     }
 
-    virtual double gautiRizika() const { return 1.0; }
+    virtual double gautiRizika() const { return RIZIKA; }
 
     virtual string gautiTipa() const = 0;
 };
 
-class Akcija : public Aktyvas {
+class Akcija : public Aktyvas { ////
 public:
     Akcija(string p, double k) : Aktyvas(p, k) {}
     string gautiTipa() const override { return "Akcija"; }
 };
 
-class Kripto : public Aktyvas {
+class Kripto : public Aktyvas { ////
 public:
     Kripto(string p, double k) : Aktyvas(p, k) {}
     string gautiTipa() const override { return "Kriptovaliuta"; }
 
-    double gautiRizika() const override { return 2.0; }
+    double gautiRizika() const override { return KRIPTO_RIZIKA; }
 };
 
 class AktyvuFactory {
@@ -237,7 +240,7 @@ void testRizika() {
 }
 
 void leistiVisusTestus() {
-    cout << "\n=== VYKDOMI UNIT TESTAI ===\n";
+    cout << "\n- - - VYKDOMI UNIT TESTAI - - -\n";
     testPirkimas();
     testPardavimas();
     testNepakankaPinigu();
@@ -348,7 +351,7 @@ public:
 
 int main() {
     srand(time(0));
-    leistiVisusTestus();
+    //leistiVisusTestus();
     Zaidimas game;
     game.start();
     return 0;
